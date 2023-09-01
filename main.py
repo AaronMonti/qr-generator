@@ -42,7 +42,7 @@ border = st.slider("Ancho del borde", min_value=1, max_value=10, value=4)
 # Botón para generar el código QR de la vCard
 if st.button("Generar Código QR"):
     if nombre and apellido and telefono and correo:
-        vcard_text = generar_vcard(nombre, apellido, telefono, correo)
+        vcard_text = generar_vcard(nombre, apellido, telefono, correo, web, empresa)
         qr_img = generar_qr_vcard(vcard_text)
         
         # Convertir la imagen PIL a un formato que Streamlit pueda mostrar
