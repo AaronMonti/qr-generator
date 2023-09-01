@@ -73,8 +73,8 @@ st.info("Complete los campos y haga clic en 'Generar Código QR' para generar la
 
 # Verificación para abrir el QR en una ventana emergente
 if st.button("Abrir QR en una ventana emergente"):
-    if nombre and apellido and telefono and correo:
-        vcard_text = generar_vcard(nombre, apellido, telefono, correo)
+    if nombre and apellido and telefono:
+        vcard_text = generar_vcard(nombre, apellido, telefono, correo, web, empresa, direccion, puesto)
         qr_img = generar_qr_vcard(vcard_text)
         qr_img_bytes = io.BytesIO()
         qr_img.save(qr_img_bytes, format="PNG")
