@@ -14,7 +14,7 @@ def generar_qr_vcard(vcard_text):
         version=1,
         error_correction=qrcode.constants.ERROR_CORRECT_L,
         box_size=10,
-        border=4,
+        border=1,
     )
     qr.add_data(vcard_text)
     qr.make(fit=True)
@@ -30,13 +30,27 @@ nombre = st.text_input("Nombre:")
 apellido = st.text_input("Apellido:")
 telefono = st.text_input("Teléfono:")
 correo = st.text_input("Correo electrónico:")
+web = st.text_input("Web:")
+empresa = st.text_input("Empresa:")
+
+# Selector para ajustar el tamaño de los cuadrados interiores
+box_size = st.slider("Tamaño de los cuadrados interiores", min_value=1, max_value=20, value=10)
+
+# Selector para ajustar el ancho del borde
+border = st.slider("Ancho del borde", min_value=1, max_value=10, value=4)
 
 # Botón para generar el código QR de la vCard
 if st.button("Generar Código QR"):
     if nombre and apellido and telefono and correo:
         vcard_text = generar_vcard(nombre, apellido, telefono, correo)
         qr_img = generar_qr_vcard(vcard_text)
-        st.image(qr_img, use_column_width=True, caption="Código QR de la vCard")
+        
+        # Convertir la imagen PIL a un formato que Streamlit pueda mostrar
+        img_byte_array = io.BytesIO()
+        qr_img.save(img_byte_array, format='PNG')
+        
+        # Mostrar la imagen en Streamlit
+        st.image(img_byte_array, use_column_width=True, caption="Código QR de la vCard")
 
 # Nota para el usuario
 st.info("Complete los campos y haga clic en 'Generar Código QR' para generar la vCard como un código QR.")
