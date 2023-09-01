@@ -3,10 +3,23 @@ import qrcode
 import io
 from PIL import Image
 
-# Función para generar una vCard en formato de texto
-def generar_vcard(nombre, apellido, telefono, correo):
-    vcard = f"BEGIN:VCARD\nVERSION:3.0\nFN:{nombre} {apellido}\nTEL:{telefono}\nEMAIL:{correo}\nEND:VCARD"
+# Función para generar una vCard en formato de texto con dirección, sitio web y puesto en la empresa
+def generar_vcard(nombre, apellido, telefono, correo, web, empresa, direccion, puesto):
+    vcard = f"BEGIN:VCARD\nVERSION:3.0\nFN:{nombre} {apellido}\nTEL:{telefono}\nEMAIL:{correo}\n"
+    if direccion:
+        vcard += f"ADR;TYPE=HOME,POSTAL:{direccion}\n"  # Agregar dirección (uso TYPE=HOME,POSTAL para dirección personal)
+    if web:
+        if not web.startswith("http://") and not web.startswith("https://"):
+            web = "http://" + web  # Agregar el prefijo "http://" si no está presente
+        vcard += f"URL:{web}\n"
+    if empresa:
+        vcard += f"ORG:{empresa}\n"
+    if puesto:
+        vcard += f"TITLE:{puesto}\n"  # Agregar el puesto en la empresa
+    vcard += "END:VCARD"
     return vcard
+
+
 
 # Función para generar un código QR a partir de una vCard
 def generar_qr_vcard(vcard_text):
@@ -31,7 +44,9 @@ apellido = st.text_input("Apellido:")
 telefono = st.text_input("Teléfono:")
 correo = st.text_input("Correo electrónico:")
 web = st.text_input("Web:")
+direccion = st.text_input("Dirección:")
 empresa = st.text_input("Empresa:")
+puesto = st.text_input("Puesto:")
 
 # Selector para ajustar el tamaño de los cuadrados interiores
 box_size = st.slider("Tamaño de los cuadrados interiores", min_value=1, max_value=20, value=10)
@@ -42,7 +57,8 @@ border = st.slider("Ancho del borde", min_value=1, max_value=10, value=4)
 # Botón para generar el código QR de la vCard
 if st.button("Generar Código QR"):
     if nombre and apellido and telefono and correo:
-        vcard_text = generar_vcard(nombre, apellido, telefono, correo, web, empresa)
+        vcard_text = generar_vcard(nombre, apellido, telefono, correo, web, empresa, direccion, puesto)
+
         qr_img = generar_qr_vcard(vcard_text)
         
         # Convertir la imagen PIL a un formato que Streamlit pueda mostrar
