@@ -26,8 +26,8 @@ def generar_qr_vcard(vcard_text):
     qr = qrcode.QRCode(
         version=1,
         error_correction=qrcode.constants.ERROR_CORRECT_L,
-        box_size=10,
-        border=1,
+        box_size=box_size_slider,
+        border=border_slider,
     )
     qr.add_data(vcard_text)
     qr.make(fit=True)
@@ -49,10 +49,10 @@ empresa = st.text_input("Empresa:")
 puesto = st.text_input("Puesto:")
 
 # Selector para ajustar el tamaño de los cuadrados interiores
-box_size = st.slider("Tamaño de los cuadrados interiores", min_value=1, max_value=20, value=10)
+box_size_slider = st.slider("Tamaño de los cuadrados interiores", min_value=1, max_value=20, value=10)
 
 # Selector para ajustar el ancho del borde
-border = st.slider("Ancho del borde", min_value=1, max_value=10, value=4)
+border_slider = st.slider("Ancho del borde", min_value=1, max_value=10, value=4)
 
 # Botón para generar el código QR de la vCard
 if st.button("Generar Código QR"):
